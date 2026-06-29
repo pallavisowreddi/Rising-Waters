@@ -1,5 +1,3 @@
-numpy
-xgboost
 flask
 requests
 gunicorn
