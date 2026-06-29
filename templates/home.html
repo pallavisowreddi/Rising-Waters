@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rising Waters - ML-Powered Flood Forecasting</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <i class="bi bi-water text-primary fs-3 me-2"></i>
+        <span class="logo-text fw-bold">Rising Waters</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-2">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Predict">Predictor</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section py-5 d-flex align-items-center">
+    <div class="container text-center py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 rounded-pill mb-3 text-uppercase fw-semibold tracking-wider">
+            Early Warning Classification System
+          </span>
+          <h1 class="hero-title text-white mb-3">
+            Intelligent Flood Risk Forecasting <br>
+            <span class="gradient-text">Powered by Machine Learning</span>
+          </h1>
+          <p class="hero-subtitle text-secondary mb-4 mx-auto">
+            A state-of-the-art predictive model designed to analyze real-time and historical weather variables—including cloud coverage, annual rainfall, and seasonal distributions—to safeguard local communities.
+          </p>
+          <div class="d-flex justify-content-center gap-3">
+            <a href="/Predict" class="btn btn-primary btn-lg px-4 py-3 fw-bold rounded-3">
+              Launch Predictor <i class="bi bi-arrow-right-short ms-1"></i>
+            </a>
+            <a href="#about" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold rounded-3">
+              Explore Project
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Project Description & Model Comparison -->
+  <section id="about" class="about-section py-5">
+    <div class="container py-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="text-primary fw-bold text-uppercase d-block mb-2">Technical Description</span>
+          <h2 class="section-title text-white mb-3">Advanced Weather Pattern Analysis</h2>
+          <p class="text-secondary mb-3">
+            Floods are among the most destructive natural disasters, often leaving emergency coordinators with inadequate response windows. Conventional models fail to capture localized seasonal variance.
+          </p>
+          <p class="text-secondary mb-4">
+            Our system implements highly optimized supervised machine learning classifiers to predict flood probabilities from 5 main atmospheric indicators: **Cloud Cover, Annual Rainfall, Jan-Feb, Mar-May, and Jun-Sep rainfall distribution**.
+          </p>
+          <div class="d-flex flex-wrap gap-4 text-white">
+            <div class="stat-box d-flex align-items-center gap-3 p-3 bg-navy-light rounded-3 border border-dark">
+              <span class="fs-1 text-primary fw-bold">96.5%</span>
+              <div>
+                <div class="fw-semibold">Model Accuracy</div>
+                <div class="text-muted small">XGBoost Classifier</div>
+              </div>
+            </div>
+            <div class="stat-box d-flex align-items-center gap-3 p-3 bg-navy-light rounded-3 border border-dark">
+              <span class="fs-1 text-primary fw-bold">0.0s</span>
+              <div>
+                <div class="fw-semibold">Response Time</div>
+                <div class="text-muted small">Real-time Inference</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="bg-navy-light p-4 rounded-4 border border-dark">
+            <h4 class="text-white mb-3 fw-bold d-flex align-items-center">
+              <i class="bi bi-bar-chart-fill text-primary me-2"></i> ML Classifier Comparison
+            </h4>
+            <p class="text-secondary small mb-4">
+              Classification performance evaluated on 75/25 split of historical weather records (random state 10).
+            </p>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover mb-0">
+                <thead>
+                  <tr class="text-secondary">
+                    <th>Algorithm</th>
+                    <th>Accuracy</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle">
+                  <tr>
+                    <td><strong>XGBoost Classifier</strong></td>
+                    <td><span class="text-primary fw-semibold">96.55%</span></td>
+                    <td><span class="badge bg-success-subtle text-success border border-success">Selected</span></td>
+                  </tr>
+                  <tr>
+                    <td>Random Forest Classifier</td>
+                    <td><span class="text-white">96.55%</span></td>
+                    <td><span class="badge bg-secondary-subtle text-muted">Backup</span></td>
+                  </tr>
+                  <tr>
+                    <td>Decision Tree Classifier</td>
+                    <td><span class="text-white">96.55%</span></td>
+                    <td><span class="badge bg-secondary-subtle text-muted">Backup</span></td>
+                  </tr>
+                  <tr>
+                    <td>K-Nearest Neighbors (KNN)</td>
+                    <td><span class="text-white">89.65%</span></td>
+                    <td><span class="badge bg-secondary-subtle text-muted">Tested</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+              * Note: XGBoost was selected for final deployment due to its superior generalization, gradient boosting efficiency, and robustness against overfitting.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section py-5 bg-navy-dark border-top border-dark">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <span class="text-primary fw-bold text-uppercase d-block mb-2">Disaster Scenarios</span>
+        <h2 class="section-title text-white">How the System is Utilized</h2>
+        <p class="text-secondary mx-auto col-lg-7">
+          Our scalable early warning framework serves meteorologists, emergency dispatch teams, and government data analysts.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Scenario 1 -->
+        <div class="col-md-4">
+          <div class="card h-100 scenario-card p-4 border border-dark rounded-4">
+            <div class="icon-circle mb-3 bg-primary-subtle text-primary">
+              <i class="bi bi-alarm-fill fs-4"></i>
+            </div>
+            <h4 class="text-white fw-bold">1. Early Warnings</h4>
+            <p class="text-secondary mb-0">
+              Meteorologists log current metrics for high-risk regions to evaluate predictions and issue critical evacuation advisories hours in advance.
+            </p>
+          </div>
+        </div>
+        <!-- Scenario 2 -->
+        <div class="col-md-4">
+          <div class="card h-100 scenario-card p-4 border border-dark rounded-4">
+            <div class="icon-circle mb-3 bg-primary-subtle text-primary">
+              <i class="bi bi-signpost-2-fill fs-4"></i>
+            </div>
+            <h4 class="text-white fw-bold">2. Resource Standby</h4>
+            <p class="text-secondary mb-0">
+              Disaster relief coordinators monitor multiple districts simultaneously during the monsoon season to prioritize resource allocation.
+            </p>
+          </div>
+        </div>
+        <!-- Scenario 3 -->
+        <div class="col-md-4">
+          <div class="card h-100 scenario-card p-4 border border-dark rounded-4">
+            <div class="icon-circle mb-3 bg-primary-subtle text-primary">
+              <i class="bi bi-shield-check fs-4"></i>
+            </div>
+            <h4 class="text-white fw-bold">3. Model Validation</h4>
+            <p class="text-secondary mb-0">
+              Government analysts run historical inputs against the models to compare accuracy, verifying the application's operational readiness.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 border-top border-dark">
+    <div class="container text-center">
+      <p class="text-muted mb-0 small">&copy; 2026 Rising Waters Project. All Rights Reserved. Prepared for SmartBridge Internship.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
