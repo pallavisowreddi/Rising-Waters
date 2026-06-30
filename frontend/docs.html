@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Model Specifications | Rising Waters{% endblock %}
+
+{% block extra_css %}
+<style>
+    .docs-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .docs-section {
+        background-color: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .docs-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.75rem;
+    }
+
+    .docs-p {
+        color: var(--ink-muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.25rem;
+    }
+
+    /* Grid layout */
+    .docs-grid {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 992px) {
+        .docs-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Table styles */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 1rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    th {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--ink-subdued);
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    td {
+        font-size: 0.9rem;
+        color: var(--ink-muted);
+        padding: 0.9rem 1rem;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Confusion Matrix Widget */
+    .matrix-container {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: var(--canvas-subdued);
+        padding: 1.5rem;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .matrix-title {
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--ink-subdued);
+        margin-bottom: 1rem;
+    }
+
+    .matrix-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .matrix-cell {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.5rem;
+    }
+
+    .matrix-val {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .matrix-lbl {
+        font-size: 0.7rem;
+        color: var(--ink-subdued);
+        text-align: center;
+    }
+
+    .matrix-cell-pass {
+        border-color: rgba(31, 161, 95, 0.3);
+        background-color: var(--grade-pass-light);
+    }
+
+    .matrix-cell-pass .matrix-val {
+        color: var(--grade-pass);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="docs-container">
+    <div class="section-header">
+        <h2 class="section-title">Model Specifications &amp; Analytics</h2>
+        <p class="section-subtitle">Technical reports on evaluations, datasets, and decision scaling parameters.</p>
+    </div>
+
+    <!-- Section 1: Preprocessing -->
+    <div class="docs-section">
+        <h3 class="docs-title">Data Preprocessing &amp; Engineering</h3>
+        <p class="docs-p">
+            Raw datasets contain outliers and missing records that skew machine learning calculations. The preprocessing phase consists of:
+        </p>
+        <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--ink-muted); font-size: 0.95rem; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+            <li><strong>Missing Values check</strong>: Handled via <code>df.isnull().sum()</code> to ensure integrity.</li>
+            <li><strong>Outlier Treatment</strong>: Extreme rainfall anomalies capped at Interquartile Range bounds (IQR Method, bounds: <code>Q1 - 1.5*IQR</code> to <code>Q3 + 1.5*IQR</code>).</li>
+            <li><strong>Feature Scaling</strong>: Data standardized using a fitted <code>StandardScaler</code> so all inputs share a mean close to 0 and a standard deviation of 1, stabilizing model margins.</li>
+        </ul>
+    </div>
+
+    <!-- Section 2: Model Performance -->
+    <div class="docs-section">
+        <h3 class="docs-title">Model Performance &amp; Confusion Matrix</h3>
+        <div class="docs-grid">
+            <div>
+                <p class="docs-p">
+                    Classification performance was calculated on a 75/25 train-test split containing 115 records. Although KNN performs reasonably well, Decision Tree, Random Forest, and XGBoost achieve identical top scores of 96.55%.
+                </p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Algorithm Type</th>
+                                <th>Accuracy</th>
+                                <th>F1-Score</th>
+                                <th>Recall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Decision Tree (Deployed)</strong></td>
+                                <td><strong>96.55%</strong></td>
+                                <td><strong>96.55%</strong></td>
+                                <td><strong>96.55%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>XGBoost Classifier</td>
+                                <td>96.55%</td>
+                                <td>96.55%</td>
+                                <td>96.55%</td>
+                            </tr>
+                            <tr>
+                                <td>Random Forest Classifier</td>
+                                <td>96.55%</td>
+                                <td>96.55%</td>
+                                <td>96.55%</td>
+                            </tr>
+                            <tr>
+                                <td>K-Nearest Neighbors (KNN)</td>
+                                <td>89.65%</td>
+                                <td>89.47%</td>
+                                <td>89.65%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <div class="matrix-container">
+                    <div class="matrix-title">Confusion Matrix - Test Split</div>
+                    <div class="matrix-grid">
+                        <!-- True Negative -->
+                        <div class="matrix-cell matrix-cell-pass">
+                            <span class="matrix-val">12</span>
+                            <span class="matrix-lbl">True Neg (Safe)</span>
+                        </div>
+                        <!-- False Positive -->
+                        <div class="matrix-cell">
+                            <span class="matrix-val">0</span>
+                            <span class="matrix-lbl">False Pos</span>
+                        </div>
+                        <!-- False Negative -->
+                        <div class="matrix-cell">
+                            <span class="matrix-val">1</span>
+                            <span class="matrix-lbl">False Neg</span>
+                        </div>
+                        <!-- True Positive -->
+                        <div class="matrix-cell matrix-cell-pass">
+                            <span class="matrix-val">16</span>
+                            <span class="matrix-lbl">True Pos (Risk)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

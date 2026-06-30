@@ -1,132 +1,137 @@
 import sys
 import os
 import unittest
+import json
 
-# Append the api directory to path so index can be imported
-sys.path.append(os.path.join(os.path.dirname(__file__), 'api'))
-from index import app
+# Import app from the main entrypoint
+from main import app
 
 class TestRisingWatersApp(unittest.TestCase):
 
     def setUp(self):
         # Configure app for testing
         app.config['TESTING'] = True
-        app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
         self.client = app.test_client()
 
     def test_home_page(self):
-        """Test that the home page renders successfully and contains branding."""
+        """Test that the home page (dashboard) renders successfully."""
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Rising Waters', response.data)
         self.assertIn(b'Intelligent Flood Risk Forecasting', response.data)
+        self.assertIn(b'Model Performance', response.data)
 
     def test_predictor_page(self):
-        """Test that the prediction form renders successfully and contains fields."""
-        response = self.client.get('/Predict')
+        """Test that the predictor form page renders successfully."""
+        response = self.client.get('/predictor')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Meteorological Prediction Form', response.data)
+        self.assertIn(b'Flood Risk Predictor Form', response.data)
         self.assertIn(b'Cloud Cover', response.data)
 
+    def test_docs_page(self):
+        """Test that the technical specs page renders successfully."""
+        response = self.client.get('/docs')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Model Specifications', response.data)
+        self.assertIn(b'Confusion Matrix', response.data)
+
+    def test_portal_page(self):
+        """Test that the project docs portal page renders successfully."""
+        response = self.client.get('/portal')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Project Documentations Portal', response.data)
+        self.assertIn(b'marked.min.js', response.data)
+
     def test_predict_low_risk(self):
-        """Test that low-risk parameters redirect to /no_chance."""
+        """Test that low-risk parameters return Low Flood Risk JSON."""
         low_risk_data = {
-            "cloud": "5.0",
-            "annual": "1200.0",
-            "janfeb": "5.0",
-            "marMay": "20.0",
-            "juneSept": "700.0"
+            "ID": "TST-LOW",
+            "cloud": 15.0,
+            "annual": 1200.0,
+            "janfeb": 10.0,
+            "marMay": 80.0,
+            "juneSept": 700.0
         }
-        response = self.client.post('/predict', data=low_risk_data)
-        # Expect redirect (302)
-        self.assertEqual(response.status_code, 302)
-        # Location header should redirect to /no_chance with parameters
-        self.assertIn('/no_chance', response.headers['Location'])
-        self.assertIn('prob=', response.headers['Location'])
+        response = self.client.post('/predict', json=low_risk_data)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(data["prediction"], "Low Flood Risk")
+        self.assertEqual(data["applicant_id"], "TST-LOW")
+        self.assertTrue("probability" in data)
+        self.assertTrue("reason" in data)
 
     def test_predict_high_risk(self):
-        """Test that high-risk parameters redirect to /chance."""
+        """Test that high-risk parameters return High Flood Risk JSON."""
         high_risk_data = {
-            "cloud": "90.0",
-            "annual": "4500.0",
-            "janfeb": "95.0",
-            "marMay": "650.0",
-            "juneSept": "3200.0"
+            "ID": "TST-HIGH",
+            "cloud": 90.0,
+            "annual": 4500.0,
+            "janfeb": 90.0,
+            "marMay": 600.0,
+            "juneSept": 3200.0
         }
-        response = self.client.post('/predict', data=high_risk_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertIn('/chance', response.headers['Location'])
-        self.assertIn('prob=', response.headers['Location'])
+        response = self.client.post('/predict', json=high_risk_data)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(data["prediction"], "High Flood Risk")
+        self.assertEqual(data["applicant_id"], "TST-HIGH")
 
     def test_validation_negative_input(self):
-        """Test that negative rainfall parameters fail validation and redirect to form."""
+        """Test that negative rainfall parameters fail validation."""
         invalid_data = {
-            "cloud": "50.0",
-            "annual": "-1000.0",
-            "janfeb": "10.0",
-            "marMay": "15.0",
-            "juneSept": "20.0"
+            "ID": "TST-NEG",
+            "cloud": 50.0,
+            "annual": -1000.0,
+            "janfeb": 10.0,
+            "marMay": 15.0,
+            "juneSept": 20.0
         }
-        response = self.client.post('/predict', data=invalid_data)
-        self.assertEqual(response.status_code, 302)
-        # Should redirect back to prediction form page
-        self.assertIn('/index', response.headers['Location'])
-
-        # Verify flash message gets set in the session
-        with self.client.session_transaction() as session:
-            flashes = session.get('_flashes', [])
-            self.assertTrue(any("cannot be negative" in f[1] for f in flashes))
+        response = self.client.post('/predict', json=invalid_data)
+        self.assertEqual(response.status_code, 400)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertTrue("error" in data)
+        self.assertIn("cannot be negative", data["error"])
 
     def test_validation_range_cloud_cover(self):
         """Test that cloud cover > 100% fails validation."""
         invalid_data = {
-            "cloud": "105.0",
-            "annual": "2000.0",
-            "janfeb": "10.0",
-            "marMay": "15.0",
-            "juneSept": "20.0"
+            "ID": "TST-RANGE",
+            "cloud": 105.0,
+            "annual": 2000.0,
+            "janfeb": 10.0,
+            "marMay": 15.0,
+            "juneSept": 20.0
         }
-        response = self.client.post('/predict', data=invalid_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertIn('/index', response.headers['Location'])
-        
-        with self.client.session_transaction() as session:
-            flashes = session.get('_flashes', [])
-            self.assertTrue(any("Cloud Cover must be between" in f[1] for f in flashes))
+        response = self.client.post('/predict', json=invalid_data)
+        self.assertEqual(response.status_code, 400)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertIn("Cloud Cover must be between", data["error"])
 
     def test_validation_logical_check(self):
         """Test that seasonal sum exceeding annual rainfall fails validation."""
         invalid_data = {
-            "cloud": "50.0",
-            "annual": "1000.0",
-            "janfeb": "500.0",
-            "marMay": "400.0",
-            "juneSept": "300.0" # sum = 1200 > 1000
+            "ID": "TST-LOGIC",
+            "cloud": 50.0,
+            "annual": 1000.0,
+            "janfeb": 500.0,
+            "marMay": 400.0,
+            "juneSept": 300.0 # sum = 1200 > 1000
         }
-        response = self.client.post('/predict', data=invalid_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertIn('/index', response.headers['Location'])
-        
-        with self.client.session_transaction() as session:
-            flashes = session.get('_flashes', [])
-            self.assertTrue(any("cannot exceed the total Annual Rainfall" in f[1] for f in flashes))
+        response = self.client.post('/predict', json=invalid_data)
+        self.assertEqual(response.status_code, 400)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertIn("cannot exceed the total Annual Rainfall", data["error"])
 
-    def test_chance_renders(self):
-        """Test that the /chance route renders properly with query parameters."""
-        response = self.client.get('/chance?prob=98.55&cloud=80&annual=3500&janfeb=50&marmay=400&junesep=2500')
+    def test_api_docs_list(self):
+        """Test the dynamic documentation list endpoint."""
+        response = self.client.get('/api/project-docs/list')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'High Flood Risk Detected!', response.data)
-        self.assertIn(b'98.55%', response.data)
-        self.assertIn(b'3500 mm', response.data)
-
-    def test_no_chance_renders(self):
-        """Test that the /no_chance route renders properly with query parameters."""
-        response = self.client.get('/no_chance?prob=92.10&cloud=15&annual=1000&janfeb=10&marmay=80&junesep=600')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Low Flood Risk Detected', response.data)
-        self.assertIn(b'92.10%', response.data)
-        self.assertIn(b'1000 mm', response.data)
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertTrue("folders" in data)
+        # Check if first folder exists in catalog
+        if len(data["folders"]) > 0:
+            self.assertTrue("name" in data["folders"][0])
+            self.assertTrue("files" in data["folders"][0])
 
 if __name__ == '__main__':
     unittest.main()

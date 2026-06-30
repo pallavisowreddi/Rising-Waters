@@ -1,0 +1,47 @@
+{
+  "total_predictions": 2,
+  "latest_prediction": {
+    "timestamp": "2026-06-30T21:43:43.923367",
+    "applicant_id": "TST-LOW",
+    "prediction": "Low Flood Risk",
+    "probability": 99.9,
+    "reason": "Monsoon season precipitation (Jun-Sep: 700.0 mm) is within safe historical limits. | Total annual rainfall (1200.0 mm) does not exceed watershed carrying capacity. | Stable cloud coverage conditions (15.0%) match non-anomalous historical patterns.",
+    "input_data": {
+      "cloud": 15.0,
+      "annual": 1200.0,
+      "janfeb": 10.0,
+      "marmay": 80.0,
+      "junesep": 700.0
+    }
+  },
+  "predictions": [
+    {
+      "timestamp": "2026-06-30T21:43:43.921230",
+      "applicant_id": "TST-HIGH",
+      "prediction": "High Flood Risk",
+      "probability": 99.9,
+      "reason": "Monsoon season precipitation (Jun-Sep: 3200.0 mm) is above the safety threshold of 2425.64 mm. | Anomalous cloud cover density (90.0%) indicates high convective storm visibility. | Monsoon rainfall represents a high percentage (71.1%) of total annual rainfall, increasing soil saturation and runoff risk.",
+      "input_data": {
+        "cloud": 90.0,
+        "annual": 4500.0,
+        "janfeb": 90.0,
+        "marmay": 600.0,
+        "junesep": 3200.0
+      }
+    },
+    {
+      "timestamp": "2026-06-30T21:43:43.923367",
+      "applicant_id": "TST-LOW",
+      "prediction": "Low Flood Risk",
+      "probability": 99.9,
+      "reason": "Monsoon season precipitation (Jun-Sep: 700.0 mm) is within safe historical limits. | Total annual rainfall (1200.0 mm) does not exceed watershed carrying capacity. | Stable cloud coverage conditions (15.0%) match non-anomalous historical patterns.",
+      "input_data": {
+        "cloud": 15.0,
+        "annual": 1200.0,
+        "janfeb": 10.0,
+        "marmay": 80.0,
+        "junesep": 700.0
+      }
+    }
+  ]
+}

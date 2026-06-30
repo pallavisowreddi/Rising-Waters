@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rising Waters - ML Flood Forecasting{% endblock %}</title>
+    <!-- Modern Premium Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS variables matching the specified premium light-theme palette */
+        :root {
+            --primary: #0056D2;
+            --on-primary: #FFFFFF;
+            --primary-hover: #004BB5;
+            --ink: #1F1F1F;
+            --ink-muted: #5C5C5C;
+            --ink-subdued: #8C8C8C;
+            --canvas: #FFFFFF;
+            --canvas-subdued: #F8FAFC;
+            --surface-1: #FFFFFF;
+            --surface-2: #F1F5F9;
+            --border: #E2E8F0;
+            --border-subtle: #F1F5F9;
+            
+            --grade-pass: #1FA15F;
+            --grade-fail: #D9534F;
+            --grade-pass-light: rgba(31, 161, 95, 0.1);
+            --grade-fail-light: rgba(217, 83, 79, 0.1);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base Resets */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--canvas-subdued);
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Clean Premium Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2.5rem;
+            background-color: var(--surface-1);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 2.2rem;
+            height: 2.2rem;
+            background-color: var(--primary);
+            color: var(--on-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--ink-muted);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background-color: var(--surface-2);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background-color: rgba(0, 86, 210, 0.08);
+            font-weight: 600;
+        }
+
+        /* Container Main content */
+        main {
+            flex: 1;
+            padding: 2.5rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Global Footer */
+        footer {
+            background-color: var(--surface-1);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--ink-muted);
+            margin-top: auto;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-container">
+            <div class="logo-icon">🌊</div>
+            <div class="logo-text">Rising Waters</div>
+        </a>
+        <nav>
+            <a href="/" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
+            <a href="/predictor" class="nav-link {% if active_page == 'predictor' %}active{% endif %}">Predictor</a>
+            <a href="/docs" class="nav-link {% if active_page == 'docs' %}active{% endif %}">Documentation</a>
+            <a href="/portal" class="nav-link {% if active_page == 'portal' %}active{% endif %}">Project Portal</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Rising Waters Flood Forecasting System. SmartBridge Internship Project.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

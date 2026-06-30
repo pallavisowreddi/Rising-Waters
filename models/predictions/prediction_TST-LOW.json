@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-06-30T21:43:43.923367",
+  "applicant_id": "TST-LOW",
+  "prediction": "Low Flood Risk",
+  "probability": 99.9,
+  "reason": "Monsoon season precipitation (Jun-Sep: 700.0 mm) is within safe historical limits. | Total annual rainfall (1200.0 mm) does not exceed watershed carrying capacity. | Stable cloud coverage conditions (15.0%) match non-anomalous historical patterns.",
+  "input_data": {
+    "cloud": 15.0,
+    "annual": 1200.0,
+    "janfeb": 10.0,
+    "marmay": 80.0,
+    "junesep": 700.0
+  }
+}
