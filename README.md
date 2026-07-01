@@ -6,9 +6,36 @@ A production-ready machine learning system built with Python, Flask, and decisio
 
 ---
 
-## Technical Accomplishments & Work Done
+## 📝 Project Overview
 
-We have refactored the codebase to transform it from a command-line script/notebook into a premium, interactive multi-page web application:
+### Abstract
+Heavy rainfall anomalies and monsoon distributions pose significant threats to low-lying areas, causing severe damage to infrastructure, agriculture, and human lives. **Rising Waters** is an end-to-end Machine Learning web application designed to predict flood susceptibility at a localized level. Using historical meteorological records, the system calculates hazard probabilities and generates detailed hazard audit logs, enabling disaster relief authorities and meteorologists to take early action.
+
+### Problem Statement
+Traditional flood forecasting relies on complex, computationally heavy hydrodynamic simulations that suffer from high latency and package bloat. There is a need for a lightweight, fast, and highly accurate machine learning system that can validate weather parameters, identify danger thresholds, and serve real-time predictions with zero-latency overhead.
+
+---
+
+## 🛠️ Technology Stack
+* **Frontend**: HTML5, Jinja2 Template Engine, Bootstrap 5 CSS, Custom CSS (Glassmorphism & Radial Gradients)
+* **Backend**: Python 3.12, Flask
+* **Machine Learning**: Custom Compiled Decision Tree Classifier (96.55% test accuracy)
+* **Static Assets Parsing**: marked.js (Markdown parsing), KaTeX (LaTeX formula parsing)
+* **Hosting/Deployment**: Vercel Serverless Functions
+
+---
+
+## 🖼️ Application Screenshots
+
+### Dashboard Interface
+![Dashboard Mockup](screenshots/dashboard_mockup.png)
+
+### Predictor Interface (AJAX and Risk Audit Details)
+![Predictor Mockup](screenshots/predictor_mockup.png)
+
+---
+
+## ✨ Key Features
 
 1. **Jinja2 Multi-Page Architecture (MPA)**:
    - Split the application layout into a clean, multi-page Flask application utilizing template inheritance.
@@ -91,3 +118,19 @@ Execute the local route verification script:
 ```bash
 python test_vercel_app.py
 ```
+
+---
+
+## 🔮 Future Scope
+* **Real-time API Integration**: Hook the system into live weather forecasting APIs (like OpenWeatherMap) to fetch real-time pressure and precipitation variables automatically.
+* **Geospatial Mapping**: Integrate leafet.js/Mapbox overlays to highlight flood susceptibility zones visually on a geographical map.
+* **Deep Learning Expansion**: Incorporate LSTM (Long Short-Term Memory) networks to model time-series data and forecast cumulative runoff rates.
+* **SMS Warning Broadcasts**: Integrate Twilio notification relays to automatically broadcast SMS alerts to resident lists in high-risk zones.
+
+---
+
+## 👥 Candidate & Submission Details
+* **Student Name**: Pallavi Sowreddi
+* **Project Track**: AI/ML Track
+* **Submission Portal**: SmartBridge / APSCHE Portal
+
