@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Rising Waters{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section Styling */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(0, 86, 210, 0.03) 0%, rgba(59, 130, 246, 0.08) 100%);
+        border-radius: 20px;
+        padding: 4rem 3rem;
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 2.5rem 1.5rem;
+        }
+    }
+
+    .hero-glass-card {
+        background: rgba(21, 29, 42, 0.75);
+        backdrop-filter: blur(20px) saturate(190%);
+        -webkit-backdrop-filter: blur(20px) saturate(190%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 3.5rem 3rem;
+        max-width: 780px;
+        width: 100%;
+        text-align: center;
+        box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 768px) {
+        .hero-glass-card {
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+    }
+
+    .hero-subtitle {
+        color: var(--ink-muted);
+        font-size: 1.15rem;
+        margin-bottom: 2.5rem;
+        font-weight: 400;
+        line-height: 1.55;
+    }
+
+    .cta-container {
+        display: flex;
+        justify-content: center;
+        gap: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+        .cta-container {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+    .btn-cta-primary {
+        background-color: var(--primary);
+        color: var(--on-primary);
+        border: none;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1.05rem;
+        font-weight: 600;
+        padding: 0.9rem 2rem;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 14px rgba(0, 86, 210, 0.2);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cta-primary:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 86, 210, 0.3);
+    }
+
+    .btn-cta-secondary {
+        background-color: var(--surface-1);
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1.05rem;
+        font-weight: 600;
+        padding: 0.9rem 2rem;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cta-secondary:hover {
+        background-color: rgba(0, 86, 210, 0.04);
+        transform: translateY(-2px);
+    }
+
+    /* Premium Bento Grid Layout */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    @media (max-width: 992px) {
+        .bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .bento-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .bento-card {
+        background-color: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+    }
+
+    .bento-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(0, 86, 210, 0.2);
+    }
+
+    .bento-span-2 {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 992px) {
+        .bento-span-2 {
+            grid-column: span 1;
+        }
+    }
+
+    .card-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+    }
+
+    .card-text {
+        color: var(--ink-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* Stats Styling */
+    .stats-row {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+        line-height: 1.2;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--ink-subdued);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    /* Scenario List widgets */
+    .scenario-item {
+        display: flex;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .scenario-item:last-child {
+        border-bottom: none;
+    }
+
+    .scenario-num {
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        background-color: rgba(0, 86, 210, 0.08);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .scenario-desc h5 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 0.2rem;
+    }
+
+    .scenario-desc p {
+        font-size: 0.85rem;
+        color: var(--ink-muted);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-glass-card">
+        <h1 class="hero-title">Intelligent Flood Risk Forecasting</h1>
+        <p class="hero-subtitle">
+            A production-ready machine learning system utilizing decision tree algorithms to predict flood hazards based on localized meteorological attributes, cloud cover visibility, and seasonal rainfall distributions.
+        </p>
+        <div class="cta-container">
+            <a href="/predictor" class="btn-cta-primary">Launch Predictor</a>
+            <a href="/docs" class="btn-cta-secondary">Review Specifications</a>
+        </div>
+    </div>
+</section>
+
+<div class="bento-grid">
+    <!-- Card 1: Accuracy -->
+    <div class="bento-card">
+        <div class="card-icon">🎯</div>
+        <h3 class="card-title">Model Performance</h3>
+        <p class="card-text">
+            Standardized evaluation parameters on our Decision Tree, Random Forest, and XGBoost classification splits.
+        </p>
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-number">96.55%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">96.55%</span>
+                <span class="stat-label">F1-Score</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2: Features -->
+    <div class="bento-card">
+        <div class="card-icon">⚡</div>
+        <h3 class="card-title">Inference Engine</h3>
+        <p class="card-text">
+            Optimized, zero-dependency prediction engine compiled in pure Python. Delivers lightning-fast predictions with zero overhead.
+        </p>
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-number">&lt; 1ms</span>
+                <span class="stat-label">Response Time</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">12 MB</span>
+                <span class="stat-label">Bundle Size</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3: Inputs -->
+    <div class="bento-card">
+        <div class="card-icon">🌧️</div>
+        <h3 class="card-title">Weather Variables</h3>
+        <p class="card-text">
+            Analyses five key atmospheric indicators: Cloud Cover (%), Annual Precipitation, Jan-Feb, Mar-May, and Jun-Sep monsoon distributions.
+        </p>
+    </div>
+
+    <!-- Card 4: Scenarios -->
+    <div class="bento-card bento-span-2">
+        <div class="card-icon">🛡️</div>
+        <h3 class="card-title">Emergency Response Scenarios</h3>
+        <div class="scenarios-list" style="margin-top: 1rem;">
+            <div class="scenario-item">
+                <div class="scenario-num">1</div>
+                <div class="scenario-desc">
+                    <h5>Early Warning Advisories</h5>
+                    <p>Meteorologists enter real-time weather readings to assess hazard probabilities and trigger evacuations hours in advance.</p>
+                </div>
+            </div>
+            <div class="scenario-item">
+                <div class="scenario-num">2</div>
+                <div class="scenario-desc">
+                    <h5>Disaster Relief Allocation</h5>
+                    <p>Coordinators monitor multiple districts simultaneously during active monsoons to prioritize resource deployment.</p>
+                </div>
+            </div>
+            <div class="scenario-item">
+                <div class="scenario-num">3</div>
+                <div class="scenario-desc">
+                    <h5>Historical Model Validation</h5>
+                    <p>Analysts run past flood logs against the classifier rules to verify prediction consistency and reliability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card 5: Platform -->
+    <div class="bento-card">
+        <div class="card-icon">☁️</div>
+        <h3 class="card-title">Cloud Scalability</h3>
+        <p class="card-text">
+            Designed for seamless deployment on Vercel utilizing serverless Python architectures for instant scaling and public sharing.
+        </p>
+    </div>
+</div>
+{% endblock %}
